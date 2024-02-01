@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\produk;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -14,10 +15,16 @@ class HomeController extends Controller
             $usertype = Auth()->user()->usertype;
 
             if ($usertype == 'user') {
-                return view('dashboard');
+                $DataProduk = produk::all();
+                return view('dashboard', compact('DataProduk'));
             } else if ($usertype == 'admin') {
-                return view('admin.index');
-            } else {
+                $Dataproduk = produk::all();
+                return view('admin.index', compact('Dataproduk'));
+            } 
+            else if ($usertype == 'staff') {
+                return view('staff.index')->name('home.staff');
+            }
+            else {
                 return redirect()->back();
             }
         }
